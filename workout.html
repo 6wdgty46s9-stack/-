@@ -1,4 +1,128 @@
-0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим в Хаммере сидя</div><div class="ex-meta">3×10 · 10 кг</div></div></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workout</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #000;
+    color: #fff;
+    padding: 32px 24px 48px;
+    max-width: 390px;
+    margin: 0 auto;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+  }
+  .top-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+  .top-count { font-size: 13px; color: #444; font-weight: 400; padding-bottom: 3px; }
+  .day-tabs { display: flex; gap: 8px; margin-bottom: 28px; }
+  .tab {
+    flex: 1; text-align: center; font-size: 12px; font-weight: 600;
+    padding: 8px 4px; border-radius: 10px; cursor: pointer;
+    color: #444; background: #111; letter-spacing: 0.2px;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s; user-select: none;
+  }
+  .tab.active { background: #fff; color: #000; }
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+  .section {
+    font-size: 10px; font-weight: 700; color: #333;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin: 24px 0 10px;
+  }
+  .section:first-child { margin-top: 0; }
+  .ex {
+    display: flex; align-items: center; gap: 14px;
+    padding: 11px 0; border-bottom: 1px solid #111;
+    cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none;
+  }
+  .ex:last-child { border-bottom: none; }
+  .cb {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid #2a2a2a; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .ex.done .cb { background: #fff; border-color: #fff; }
+  .cb svg { display: none; width: 11px; height: 11px; }
+  .ex.done .cb svg { display: block; }
+  .ex-body { flex: 1; min-width: 0; }
+  .ex-name { font-size: 15px; font-weight: 400; color: #d0d0d0; letter-spacing: -0.2px; transition: color 0.15s; }
+  .ex.done .ex-name { color: #2a2a2a; text-decoration: line-through; text-decoration-color: #2a2a2a; }
+  .ex-meta { font-size: 12px; color: #3a3a3a; margin-top: 1px; transition: color 0.15s; }
+  .ex.done .ex-meta { color: #1e1e1e; }
+  .new { font-size: 9px; font-weight: 700; color: #333; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
+  .progress-bar { height: 1px; background: #111; border-radius: 1px; margin-bottom: 28px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #fff; border-radius: 1px; transition: width 0.3s ease; width: 0%; }
+  .reset {
+    display: block; width: 100%; margin-top: 36px; padding: 14px;
+    background: none; border: none; color: #2a2a2a; font-size: 12px;
+    font-family: inherit; font-weight: 500; letter-spacing: 0.05em;
+    cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent;
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-title">Workout</div>
+  <div class="top-count" id="count">0 / 0</div>
+</div>
+
+<div class="day-tabs">
+  <div class="tab active" onclick="switchDay(0)">День 1</div>
+  <div class="tab" onclick="switchDay(1)">День 2</div>
+  <div class="tab" onclick="switchDay(2)">День 3</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div class="day-panel active" id="day0">
+  <div class="section">Грудь</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим штанги лёжа</div><div class="ex-meta">4×8–10 · 30–40 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим гантелей наклон<span class="new">new</span></div><div class="ex-meta">3×10–12 · 8–10 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Грудь в Хаммере</div><div class="ex-meta">3×12 · 37.5 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Бабочка</div><div class="ex-meta">3×12–15 · 45 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разводка гантелей лёжа<span class="new">new</span></div><div class="ex-meta">3×12 · 6–8 кг</div></div></div>
+  <div class="section">Трицепс</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим узким хватом<span class="new">new</span></div><div class="ex-meta">3×10 · 20–30 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Французский жим лёжа</div><div class="ex-meta">3×10 · 7.5 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разгибания с косичками</div><div class="ex-meta">3×12 · 11 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Русские отжимания</div><div class="ex-meta">3×10–12</div></div></div>
+</div>
+
+<div class="day-panel" id="day1">
+  <div class="section">Спина</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Подтягивания широким хватом</div><div class="ex-meta">4×6–8 · с петлёй</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга верхнего блока</div><div class="ex-meta">3×10–12 · 25–30 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга гантели в наклоне<span class="new">new</span></div><div class="ex-meta">3×10–12 · 14–18 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга горизонт. блока</div><div class="ex-meta">3×10–12 · 50 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Гребля</div><div class="ex-meta">3×12</div></div></div>
+  <div class="section">Бицепс</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Подъём штанги стоя</div><div class="ex-meta">3×10–12 · 15–20 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Концентр. сгибания<span class="new">new</span></div><div class="ex-meta">3×12 · 8–10 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Молотки с гантелями</div><div class="ex-meta">3×10 · 8 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Бицепс в Хаммере</div><div class="ex-meta">3×10 · 25 кг</div></div></div>
+</div>
+
+<div class="day-panel" id="day2">
+  <div class="section">Ноги</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Приседания со штангой<span class="new">new</span></div><div class="ex-meta">4×8–10 · 20–40 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим ногами в Хаммере</div><div class="ex-meta">3×10 · 40–50 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разгибания ног в тренажёре</div><div class="ex-meta">3×12–15 · 32 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Румынская тяга с гантелями<span class="new">new</span></div><div class="ex-meta">3×12 · 14–18 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Сгибания бицепс бедра</div><div class="ex-meta">3×10–12 · 30 кг</div></div></div>
+  <div class="section">Плечи</div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим штанги стоя</div><div class="ex-meta">3×10 · 20–25 кг</div></div></div>
+  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим в Хаммере сидя</div><div class="ex-meta">3×10 · 10 кг</div></div></div>
   <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разводка в стороны<span class="new">new</span></div><div class="ex-meta">3×15 · 5–6 кг</div></div></div>
   <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Гиря к подбородку</div><div class="ex-meta">3×12 · 12–16 кг</div></div></div>
 </div>
@@ -8,4 +132,27 @@
 <script>
 let currentDay = 0;
 function switchDay(i) {
-  document.querySelectorAll('.tab').forEac
+  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
+  document.querySelectorAll('.day-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+  currentDay = i;
+  updateProgress();
+}
+function toggle(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+function updateProgress() {
+  const panel = document.getElementById('day' + currentDay);
+  const all = panel.querySelectorAll('.ex').length;
+  const done = panel.querySelectorAll('.ex.done').length;
+  document.getElementById('progress').style.width = (all ? done/all*100 : 0) + '%';
+  document.getElementById('count').textContent = done + ' / ' + all;
+}
+function resetDay() {
+  document.getElementById('day' + currentDay).querySelectorAll('.ex.done').forEach(e => e.classList.remove('done'));
+  updateProgress();
+}
+updateProgress();
+</script>
+</body>
+</html>

@@ -87,6 +87,8 @@
   .hist-time { font-size: 13px; color: #fff; font-weight: 500; font-variant-numeric: tabular-nums; }
   .hist-empty { font-size: 13px; color: #2a2a2a; text-align: center; padding: 24px 0; }
 
+  .reset-stats { display: block; width: 100%; margin-top: 36px; padding: 14px; background: none; border: 1px solid #1a1a1a; border-radius: 12px; color: #333; font-size: 12px; font-family: inherit; font-weight: 500; letter-spacing: 0.05em; cursor: pointer; text-align: center; }
+
   /* nav */
   .nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid #111; display: flex; max-width: 390px; margin: 0 auto; z-index: 100; }
   .nav-item { flex: 1; text-align: center; padding: 14px 0 30px; font-size: 10px; font-weight: 600; color: #333; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; user-select: none; }
@@ -161,6 +163,8 @@
 
   <div class="hist-title">История</div>
   <div id="histList"></div>
+
+  <button class="reset-stats" onclick="resetStats()">сбросить статистику</button>
 </div>
 
 <div class="nav">
@@ -452,6 +456,20 @@ function renderHist(history) {
       <div class="hist-time">${h.totalMs ? fmtDur(h.totalMs) : '—'}</div>
     </div>`;
   }).join('');
+}
+
+function resetStats() {
+  if (!confirm('Точно сбросить всю статистику? История, стрик и календарь будут удалены.')) return;
+  localStorage.removeItem('workoutHistory');
+  localStorage.removeItem('streakRec');
+  localStorage.removeItem('exState');
+  activeEx = null;
+  workoutStartTime = null;
+  clearInterval(tickInterval);
+  document.getElementById('wbar').classList.remove('show');
+  document.body.classList.remove('workout-active');
+  showStats();
+  renderExercises();
 }
 
 function showPage(name) {

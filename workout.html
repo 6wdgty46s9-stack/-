@@ -480,6 +480,25 @@ function showPage(name) {
   if (name === 'stats') showStats();
 }
 
+// DEMO: запись на 23 число для превью (удалится через "сбросить статистику")
+(function seedDemo() {
+  const h = loadHistory();
+  if (!h.some(x => x.demo)) {
+    const now = new Date();
+    const d = new Date(now.getFullYear(), now.getMonth(), 23, 18, 30);
+    h.push({
+      date: d.toISOString(),
+      dayLabel: "День 1",
+      dayTitle: "Грудь + Трицепс",
+      totalMs: 62 * 60000,
+      doneCount: 9, total: 9,
+      demo: true
+    });
+    h.sort((a,b) => new Date(b.date) - new Date(a.date));
+    saveHistory(h);
+  }
+})();
+
 renderExercises();
 </script>
 </body>

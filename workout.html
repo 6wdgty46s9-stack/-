@@ -2,157 +2,467 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Workout</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #000;
-    color: #fff;
-    padding: 32px 24px 48px;
-    max-width: 390px;
-    margin: 0 auto;
-  }
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 36px;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+
+  .page { display: none; padding: 32px 24px 110px; min-height: 100vh; max-width: 390px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
   .top-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
-  .top-count { font-size: 13px; color: #444; font-weight: 400; padding-bottom: 3px; }
-  .day-tabs { display: flex; gap: 8px; margin-bottom: 28px; }
-  .tab {
-    flex: 1; text-align: center; font-size: 12px; font-weight: 600;
-    padding: 8px 4px; border-radius: 10px; cursor: pointer;
-    color: #444; background: #111; letter-spacing: 0.2px;
-    -webkit-tap-highlight-color: transparent;
-    transition: all 0.15s; user-select: none;
-  }
+  .top-count { font-size: 13px; color: #444; padding-bottom: 3px; font-variant-numeric: tabular-nums; }
+
+  /* tabs */
+  .day-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .tab { flex: 1; text-align: center; font-size: 12px; font-weight: 600; padding: 8px 4px; border-radius: 10px; cursor: pointer; color: #444; background: #111; letter-spacing: 0.2px; transition: all 0.15s; user-select: none; }
   .tab.active { background: #fff; color: #000; }
-  .day-panel { display: none; }
-  .day-panel.active { display: block; }
-  .section {
-    font-size: 10px; font-weight: 700; color: #333;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    margin: 24px 0 10px;
-  }
-  .section:first-child { margin-top: 0; }
-  .ex {
-    display: flex; align-items: center; gap: 14px;
-    padding: 11px 0; border-bottom: 1px solid #111;
-    cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none;
-  }
+
+  .progress-bar { height: 1px; background: #111; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #fff; transition: width 0.3s ease; width: 0%; }
+
+  .section { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin: 24px 0 10px; }
+  .section:first-of-type { margin-top: 0; }
+
+  .ex { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid #111; cursor: pointer; user-select: none; }
   .ex:last-child { border-bottom: none; }
-  .cb {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 1.5px solid #2a2a2a; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
+  .cb { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #2a2a2a; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .ex.active-ex .cb { border-color: #fff; }
   .ex.done .cb { background: #fff; border-color: #fff; }
   .cb svg { display: none; width: 11px; height: 11px; }
   .ex.done .cb svg { display: block; }
   .ex-body { flex: 1; min-width: 0; }
   .ex-name { font-size: 15px; font-weight: 400; color: #d0d0d0; letter-spacing: -0.2px; transition: color 0.15s; }
+  .ex.active-ex .ex-name { color: #fff; font-weight: 500; }
   .ex.done .ex-name { color: #2a2a2a; text-decoration: line-through; text-decoration-color: #2a2a2a; }
-  .ex-meta { font-size: 12px; color: #3a3a3a; margin-top: 1px; transition: color 0.15s; }
+  .ex-meta { font-size: 12px; color: #3a3a3a; margin-top: 1px; }
   .ex.done .ex-meta { color: #1e1e1e; }
-  .new { font-size: 9px; font-weight: 700; color: #333; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 6px; vertical-align: middle; }
-  .progress-bar { height: 1px; background: #111; border-radius: 1px; margin-bottom: 28px; overflow: hidden; }
-  .progress-fill { height: 100%; background: #fff; border-radius: 1px; transition: width 0.3s ease; width: 0%; }
-  .reset {
-    display: block; width: 100%; margin-top: 36px; padding: 14px;
-    background: none; border: none; color: #2a2a2a; font-size: 12px;
-    font-family: inherit; font-weight: 500; letter-spacing: 0.05em;
-    cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent;
-  }
+  .new { font-size: 9px; font-weight: 700; color: #333; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 6px; }
+  .ex-timer { font-size: 12px; color: #fff; font-weight: 500; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .ex.done .ex-timer { color: #2a2a2a; }
+
+  .finish { display: block; width: 100%; margin-top: 32px; padding: 15px; background: #fff; border: none; border-radius: 12px; color: #000; font-size: 14px; font-family: inherit; font-weight: 600; letter-spacing: 0.02em; cursor: pointer; }
+  .finish:disabled { background: #111; color: #333; }
+
+  /* workout bar */
+  .wbar { position: fixed; top: 0; left: 0; right: 0; background: #fff; color: #000; padding: 10px 24px; display: none; justify-content: space-between; align-items: center; z-index: 99; max-width: 390px; margin: 0 auto; }
+  .wbar.show { display: flex; }
+  .wbar-label { font-size: 12px; font-weight: 600; }
+  .wbar-time { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  body.workout-active .page { padding-top: 72px; }
+
+  /* stats */
+  .streak { text-align: center; margin-bottom: 40px; }
+  .streak-label { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
+  .streak-row { display: flex; justify-content: center; align-items: baseline; gap: 24px; margin-bottom: 14px; }
+  .s-num { font-size: 24px; font-weight: 700; color: #1e1e1e; }
+  .s-num.cur { font-size: 56px; color: #fff; letter-spacing: -2px; }
+  .streak-rec { font-size: 11px; color: #333; letter-spacing: 0.05em; }
+
+  .cal { margin-bottom: 36px; }
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .cal-title { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; }
+  .cal-right { display: flex; align-items: center; gap: 14px; }
+  .cal-month { font-size: 13px; font-weight: 500; color: #d0d0d0; }
+  .cal-nav button { background: none; border: none; color: #333; font-size: 18px; cursor: pointer; padding: 0 6px; font-family: inherit; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-dow { font-size: 9px; color: #2a2a2a; text-align: center; padding: 4px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 9px; font-size: 13px; color: #333; }
+  .cal-day.has { background: #fff; color: #000; font-weight: 600; }
+  .cal-day.today:not(.has) { border: 1px solid #333; color: #d0d0d0; }
+
+  .stats-row { display: flex; gap: 32px; margin-bottom: 40px; }
+  .stat { flex: 1; }
+  .stat-label { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .stat-val { font-size: 32px; font-weight: 700; letter-spacing: -1px; color: #fff; font-variant-numeric: tabular-nums; }
+  .stat-val span { font-size: 14px; font-weight: 400; color: #333; margin-left: 2px; letter-spacing: 0; }
+
+  .hist-title { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .hist-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #111; }
+  .hist-item:last-child { border-bottom: none; }
+  .hist-name { font-size: 14px; color: #d0d0d0; font-weight: 500; }
+  .hist-sub { font-size: 11px; color: #333; margin-top: 2px; }
+  .hist-time { font-size: 13px; color: #fff; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .hist-empty { font-size: 13px; color: #2a2a2a; text-align: center; padding: 24px 0; }
+
+  /* nav */
+  .nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid #111; display: flex; max-width: 390px; margin: 0 auto; z-index: 100; }
+  .nav-item { flex: 1; text-align: center; padding: 14px 0 30px; font-size: 10px; font-weight: 600; color: #333; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; user-select: none; }
+  .nav-item.active { color: #fff; }
 </style>
 </head>
 <body>
 
-<div class="top">
-  <div class="top-title">Workout</div>
-  <div class="top-count" id="count">0 / 0</div>
+<div class="wbar" id="wbar">
+  <div class="wbar-label">Тренировка</div>
+  <div class="wbar-time" id="wbarTime">0:00</div>
 </div>
 
-<div class="day-tabs">
-  <div class="tab active" onclick="switchDay(0)">День 1</div>
-  <div class="tab" onclick="switchDay(1)">День 2</div>
-  <div class="tab" onclick="switchDay(2)">День 3</div>
+<div class="page active" id="pageWorkout">
+  <div class="top">
+    <div class="top-title">Workout</div>
+    <div class="top-count" id="countLabel">0 / 0</div>
+  </div>
+
+  <div class="day-tabs">
+    <div class="tab active" onclick="switchDay(0)">День 1</div>
+    <div class="tab" onclick="switchDay(1)">День 2</div>
+    <div class="tab" onclick="switchDay(2)">День 3</div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div id="exList"></div>
+
+  <button class="finish" id="finishBtn" onclick="finishWorkout()" disabled>Завершить тренировку</button>
 </div>
 
-<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div class="page" id="pageStats">
+  <div class="top">
+    <div class="top-title">Статистика</div>
+  </div>
 
-<div class="day-panel active" id="day0">
-  <div class="section">Грудь</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим штанги лёжа</div><div class="ex-meta">4×8–10 · 30–40 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим гантелей наклон<span class="new">new</span></div><div class="ex-meta">3×10–12 · 8–10 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Грудь в Хаммере</div><div class="ex-meta">3×12 · 37.5 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Бабочка</div><div class="ex-meta">3×12–15 · 45 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разводка гантелей лёжа<span class="new">new</span></div><div class="ex-meta">3×12 · 6–8 кг</div></div></div>
-  <div class="section">Трицепс</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим узким хватом<span class="new">new</span></div><div class="ex-meta">3×10 · 20–30 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Французский жим лёжа</div><div class="ex-meta">3×10 · 7.5 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разгибания с косичками</div><div class="ex-meta">3×12 · 11 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Русские отжимания</div><div class="ex-meta">3×10–12</div></div></div>
+  <div class="streak">
+    <div class="streak-label">Недели подряд</div>
+    <div class="streak-row">
+      <div class="s-num" id="sM1">—</div>
+      <div class="s-num cur" id="sCur">0</div>
+      <div class="s-num" id="sP1">—</div>
+    </div>
+    <div class="streak-rec">рекорд — <span id="sRec">0</span> нед.</div>
+  </div>
+
+  <div class="cal">
+    <div class="cal-head">
+      <div class="cal-title">Посещения</div>
+      <div class="cal-right">
+        <div class="cal-nav">
+          <button onclick="calPrev()">‹</button>
+          <button onclick="calNext()">›</button>
+        </div>
+        <div class="cal-month" id="calMonth"></div>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-label">Посещений</div>
+      <div class="stat-val" id="totalVisits">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Время в зале</div>
+      <div class="stat-val" id="totalTime">0<span>ч</span> 0<span>м</span></div>
+    </div>
+  </div>
+
+  <div class="hist-title">История</div>
+  <div id="histList"></div>
 </div>
 
-<div class="day-panel" id="day1">
-  <div class="section">Спина</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Подтягивания широким хватом</div><div class="ex-meta">4×6–8 · с петлёй</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга верхнего блока</div><div class="ex-meta">3×10–12 · 25–30 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга гантели в наклоне<span class="new">new</span></div><div class="ex-meta">3×10–12 · 14–18 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Тяга горизонт. блока</div><div class="ex-meta">3×10–12 · 50 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Гребля</div><div class="ex-meta">3×12</div></div></div>
-  <div class="section">Бицепс</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Подъём штанги стоя</div><div class="ex-meta">3×10–12 · 15–20 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Концентр. сгибания<span class="new">new</span></div><div class="ex-meta">3×12 · 8–10 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Молотки с гантелями</div><div class="ex-meta">3×10 · 8 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Бицепс в Хаммере</div><div class="ex-meta">3×10 · 25 кг</div></div></div>
+<div class="nav">
+  <div class="nav-item active" id="navWorkout" onclick="showPage('workout')">Тренировка</div>
+  <div class="nav-item" id="navStats" onclick="showPage('stats')">Статистика</div>
 </div>
-
-<div class="day-panel" id="day2">
-  <div class="section">Ноги</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Приседания со штангой<span class="new">new</span></div><div class="ex-meta">4×8–10 · 20–40 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим ногами в Хаммере</div><div class="ex-meta">3×10 · 40–50 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разгибания ног в тренажёре</div><div class="ex-meta">3×12–15 · 32 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Румынская тяга с гантелями<span class="new">new</span></div><div class="ex-meta">3×12 · 14–18 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Сгибания бицепс бедра</div><div class="ex-meta">3×10–12 · 30 кг</div></div></div>
-  <div class="section">Плечи</div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим штанги стоя</div><div class="ex-meta">3×10 · 20–25 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Жим в Хаммере сидя</div><div class="ex-meta">3×10 · 10 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Разводка в стороны<span class="new">new</span></div><div class="ex-meta">3×15 · 5–6 кг</div></div></div>
-  <div class="ex" onclick="toggle(this)"><div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ex-body"><div class="ex-name">Гиря к подбородку</div><div class="ex-meta">3×12 · 12–16 кг</div></div></div>
-</div>
-
-<button class="reset" onclick="resetDay()">сбросить</button>
 
 <script>
+const DAYS = [
+  {
+    label: "День 1", title: "Грудь + Трицепс",
+    sections: [
+      { name: "Грудь", exercises: [
+        { name: "Жим штанги лёжа", meta: "4×8–10 · 30–40 кг" },
+        { name: "Жим гантелей наклон", meta: "3×10–12 · 8–10 кг", isNew: true },
+        { name: "Грудь в Хаммере", meta: "3×12 · 37.5 кг" },
+        { name: "Бабочка", meta: "3×12–15 · 45 кг" },
+        { name: "Разводка гантелей лёжа", meta: "3×12 · 6–8 кг", isNew: true },
+      ]},
+      { name: "Трицепс", exercises: [
+        { name: "Жим узким хватом", meta: "3×10 · 20–30 кг", isNew: true },
+        { name: "Французский жим лёжа", meta: "3×10 · 7.5 кг" },
+        { name: "Разгибания с косичками", meta: "3×12 · 11 кг" },
+        { name: "Русские отжимания", meta: "3×10–12" },
+      ]}
+    ]
+  },
+  {
+    label: "День 2", title: "Спина + Бицепс",
+    sections: [
+      { name: "Спина", exercises: [
+        { name: "Подтягивания широким хватом", meta: "4×6–8 · с петлёй" },
+        { name: "Тяга верхнего блока", meta: "3×10–12 · 25–30 кг" },
+        { name: "Тяга гантели в наклоне", meta: "3×10–12 · 14–18 кг", isNew: true },
+        { name: "Тяга горизонт. блока", meta: "3×10–12 · 50 кг" },
+        { name: "Гребля", meta: "3×12" },
+      ]},
+      { name: "Бицепс", exercises: [
+        { name: "Подъём штанги стоя", meta: "3×10–12 · 15–20 кг" },
+        { name: "Концентр. сгибания", meta: "3×12 · 8–10 кг", isNew: true },
+        { name: "Молотки с гантелями", meta: "3×10 · 8 кг" },
+        { name: "Бицепс в Хаммере", meta: "3×10 · 25 кг" },
+      ]}
+    ]
+  },
+  {
+    label: "День 3", title: "Ноги + Плечи",
+    sections: [
+      { name: "Ноги", exercises: [
+        { name: "Приседания со штангой", meta: "4×8–10 · 20–40 кг", isNew: true },
+        { name: "Жим ногами в Хаммере", meta: "3×10 · 40–50 кг" },
+        { name: "Разгибания ног в тренажёре", meta: "3×12–15 · 32 кг" },
+        { name: "Румынская тяга с гантелями", meta: "3×12 · 14–18 кг", isNew: true },
+        { name: "Сгибания бицепс бедра", meta: "3×10–12 · 30 кг" },
+      ]},
+      { name: "Плечи", exercises: [
+        { name: "Жим штанги стоя", meta: "3×10 · 20–25 кг" },
+        { name: "Жим в Хаммере сидя", meta: "3×10 · 10 кг" },
+        { name: "Разводка в стороны", meta: "3×15 · 5–6 кг", isNew: true },
+        { name: "Гиря к подбородку", meta: "3×12 · 12–16 кг" },
+      ]}
+    ]
+  }
+];
+
 let currentDay = 0;
-function switchDay(i) {
-  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
-  document.querySelectorAll('.day-panel').forEach((p,j) => p.classList.toggle('active', i===j));
-  currentDay = i;
+let exState = {};
+let activeEx = null;
+let workoutStartTime = null;
+let tickInterval = null;
+
+function getKey(si, ei) { return `${currentDay}-${si}-${ei}`; }
+function loadState() { try { return JSON.parse(localStorage.getItem('exState')||'{}'); } catch { return {}; } }
+function saveState() { localStorage.setItem('exState', JSON.stringify(exState)); }
+function loadHistory() { try { return JSON.parse(localStorage.getItem('workoutHistory')||'[]'); } catch { return []; } }
+function saveHistory(h) { localStorage.setItem('workoutHistory', JSON.stringify(h)); }
+
+function fmtTimer(ms) {
+  const s = Math.floor(ms/1000), m = Math.floor(s/60);
+  return `${m}:${String(s%60).padStart(2,'0')}`;
+}
+function fmtBar(ms) {
+  const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60);
+  if (h>0) return `${h}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  return `${m}:${String(s%60).padStart(2,'0')}`;
+}
+function fmtDur(ms) {
+  const min = Math.floor(ms/60000), h = Math.floor(min/60);
+  if (h>0) return `${h}ч ${min%60}м`;
+  return `${min}м`;
+}
+
+function renderExercises() {
+  exState = loadState();
+  const day = DAYS[currentDay];
+  let html = '';
+  day.sections.forEach((sec, si) => {
+    html += `<div class="section">${sec.name}</div>`;
+    sec.exercises.forEach((ex, ei) => {
+      const key = getKey(si, ei);
+      const st = exState[key] || {};
+      const isActive = activeEx === key;
+      const elapsed = st.elapsed || 0;
+      html += `<div class="ex${st.done?' done':''}${isActive?' active-ex':''}" onclick="tapEx('${key}')">
+        <div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ex-body">
+          <div class="ex-name">${ex.name}${ex.isNew?'<span class="new">new</span>':''}</div>
+          <div class="ex-meta">${ex.meta}</div>
+        </div>
+        <div class="ex-timer" id="t-${key}">${elapsed>0?fmtTimer(elapsed):''}</div>
+      </div>`;
+    });
+  });
+  document.getElementById('exList').innerHTML = html;
   updateProgress();
 }
-function toggle(el) {
-  el.classList.toggle('done');
-  updateProgress();
+
+function tapEx(key) {
+  exState = loadState();
+  const now = Date.now();
+
+  if (activeEx === key) {
+    const st = exState[key] || {};
+    exState[key] = { done: true, elapsed: (st.elapsed||0) + (now - (st.startTime||now)) };
+    activeEx = null;
+    clearInterval(tickInterval);
+    saveState(); renderExercises(); return;
+  }
+
+  if (activeEx) {
+    const prev = exState[activeEx] || {};
+    exState[activeEx] = { done: true, elapsed: (prev.elapsed||0) + (now - (prev.startTime||now)) };
+  }
+
+  if (!workoutStartTime) {
+    workoutStartTime = now;
+    document.getElementById('wbar').classList.add('show');
+    document.body.classList.add('workout-active');
+  }
+
+  exState[key] = { done: false, startTime: now, elapsed: exState[key]?.elapsed || 0 };
+  activeEx = key;
+  saveState(); renderExercises();
+
+  clearInterval(tickInterval);
+  tickInterval = setInterval(() => {
+    const st = exState[key] || {};
+    const el = document.getElementById(`t-${key}`);
+    if (el) el.textContent = fmtTimer((st.elapsed||0) + (Date.now() - (st.startTime||Date.now())));
+    if (workoutStartTime) document.getElementById('wbarTime').textContent = fmtBar(Date.now() - workoutStartTime);
+  }, 1000);
 }
+
 function updateProgress() {
-  const panel = document.getElementById('day' + currentDay);
-  const all = panel.querySelectorAll('.ex').length;
-  const done = panel.querySelectorAll('.ex.done').length;
-  document.getElementById('progress').style.width = (all ? done/all*100 : 0) + '%';
-  document.getElementById('count').textContent = done + ' / ' + all;
+  const day = DAYS[currentDay];
+  let total = 0, done = 0;
+  day.sections.forEach((sec, si) => sec.exercises.forEach((_, ei) => {
+    total++;
+    if ((exState[getKey(si,ei)]||{}).done) done++;
+  }));
+  document.getElementById('progressFill').style.width = total ? (done/total*100)+'%' : '0%';
+  document.getElementById('countLabel').textContent = `${done} / ${total}`;
+  document.getElementById('finishBtn').disabled = done === 0;
 }
-function resetDay() {
-  document.getElementById('day' + currentDay).querySelectorAll('.ex.done').forEach(e => e.classList.remove('done'));
-  updateProgress();
+
+function finishWorkout() {
+  exState = loadState();
+  const now = Date.now();
+  if (activeEx) {
+    const st = exState[activeEx] || {};
+    exState[activeEx] = { done: true, elapsed: (st.elapsed||0) + (now - (st.startTime||now)) };
+    activeEx = null;
+    clearInterval(tickInterval);
+  }
+
+  const day = DAYS[currentDay];
+  let doneCount = 0, total = 0;
+  day.sections.forEach((sec, si) => sec.exercises.forEach((_, ei) => {
+    total++;
+    if ((exState[getKey(si,ei)]||{}).done) doneCount++;
+  }));
+
+  const history = loadHistory();
+  history.unshift({
+    date: new Date().toISOString(),
+    dayLabel: day.label,
+    dayTitle: day.title,
+    totalMs: workoutStartTime ? now - workoutStartTime : 0,
+    doneCount, total
+  });
+  saveHistory(history);
+
+  const newState = {};
+  Object.keys(exState).forEach(k => { if (!k.startsWith(currentDay+'-')) newState[k] = exState[k]; });
+  localStorage.setItem('exState', JSON.stringify(newState));
+  workoutStartTime = null;
+  document.getElementById('wbar').classList.remove('show');
+  document.body.classList.remove('workout-active');
+  renderExercises();
+  showPage('stats');
 }
-updateProgress();
+
+function switchDay(i) {
+  currentDay = i;
+  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
+  activeEx = null;
+  clearInterval(tickInterval);
+  renderExercises();
+}
+
+let calYear, calMonth;
+
+function showStats() {
+  const history = loadHistory();
+  renderStreak(history);
+  renderCalendar(history);
+  document.getElementById('totalVisits').textContent = history.length;
+  const totalMs = history.reduce((a,h) => a+(h.totalMs||0), 0);
+  const min = Math.floor(totalMs/60000), h = Math.floor(min/60);
+  document.getElementById('totalTime').innerHTML = `${h}<span>ч</span> ${min%60}<span>м</span>`;
+  renderHist(history);
+}
+
+function getWeekKey(d) {
+  const t = new Date(d); t.setHours(0,0,0,0);
+  const dow = t.getDay() === 0 ? 6 : t.getDay()-1;
+  t.setDate(t.getDate() - dow);
+  return t.toISOString().slice(0,10);
+}
+function prevWeek(wk) { const d = new Date(wk); d.setDate(d.getDate()-7); return d.toISOString().slice(0,10); }
+
+function renderStreak(history) {
+  const weeks = new Set(history.map(h => getWeekKey(new Date(h.date))));
+  const sorted = Array.from(weeks).sort().reverse();
+  let streak = 0;
+  if (sorted.length) {
+    const cur = getWeekKey(new Date());
+    if (sorted[0] === cur || sorted[0] === prevWeek(cur)) {
+      streak = 1;
+      for (let i=1; i<sorted.length; i++) {
+        if (sorted[i] === prevWeek(sorted[i-1])) streak++;
+        else break;
+      }
+    }
+  }
+  const rec = Math.max(parseInt(localStorage.getItem('streakRec')||'0'), streak);
+  localStorage.setItem('streakRec', rec);
+  document.getElementById('sCur').textContent = streak;
+  document.getElementById('sM1').textContent = streak > 0 ? streak-1 : '—';
+  document.getElementById('sP1').textContent = streak+1;
+  document.getElementById('sRec').textContent = rec;
+}
+
+function renderCalendar(history) {
+  const now = new Date();
+  if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
+  const wd = new Set(history.map(h => h.date.slice(0,10)));
+  const months = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+  document.getElementById('calMonth').textContent = months[calMonth]+' '+calYear;
+  let html = ['пн','вт','ср','чт','пт','сб','вс'].map(d => `<div class="cal-dow">${d}</div>`).join('');
+  let start = new Date(calYear, calMonth, 1).getDay();
+  start = start === 0 ? 6 : start-1;
+  for (let i=0;i<start;i++) html += `<div class="cal-day"></div>`;
+  const dim = new Date(calYear, calMonth+1, 0).getDate();
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  for (let d=1; d<=dim; d++) {
+    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    html += `<div class="cal-day${wd.has(ds)?' has':''}${ds===today?' today':''}">${d}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+
+function calPrev() { calMonth--; if (calMonth<0){calMonth=11;calYear--;} renderCalendar(loadHistory()); }
+function calNext() { calMonth++; if (calMonth>11){calMonth=0;calYear++;} renderCalendar(loadHistory()); }
+
+function renderHist(history) {
+  if (!history.length) {
+    document.getElementById('histList').innerHTML = `<div class="hist-empty">Пока пусто</div>`;
+    return;
+  }
+  const m = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+  document.getElementById('histList').innerHTML = history.slice(0,15).map(h => {
+    const d = new Date(h.date);
+    return `<div class="hist-item">
+      <div>
+        <div class="hist-name">${h.dayTitle}</div>
+        <div class="hist-sub">${d.getDate()} ${m[d.getMonth()]} · ${h.doneCount}/${h.total} упр.</div>
+      </div>
+      <div class="hist-time">${h.totalMs ? fmtDur(h.totalMs) : '—'}</div>
+    </div>`;
+  }).join('');
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
+  document.getElementById('nav'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
+  if (name === 'stats') showStats();
+}
+
+renderExercises();
 </script>
 </body>
 </html>

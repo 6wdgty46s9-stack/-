@@ -23,8 +23,9 @@
   .progress-bar { height: 1px; background: #111; margin-bottom: 24px; overflow: hidden; }
   .progress-fill { height: 100%; background: #fff; transition: width 0.3s ease; width: 0%; }
 
-  .section { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin: 24px 0 10px; }
+  .section { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin: 24px 0 10px; }
   .section:first-of-type { margin-top: 0; }
+  .section-total { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; color: #555; }
 
   .ex { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid #111; cursor: pointer; user-select: none; }
   .ex:last-child { border-bottom: none; }
@@ -78,6 +79,7 @@
   .stat-label { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
   .stat-val { font-size: 32px; font-weight: 700; letter-spacing: -1px; color: #fff; font-variant-numeric: tabular-nums; }
   .stat-val span { font-size: 14px; font-weight: 400; color: #333; margin-left: 2px; letter-spacing: 0; }
+  .stat-sub { font-size: 11px; color: #333; margin-top: 6px; letter-spacing: 0.02em; }
 
   .hist-title { font-size: 10px; font-weight: 700; color: #333; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
   .hist-item { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #111; }
@@ -93,6 +95,37 @@
   .nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid #111; display: flex; max-width: 390px; margin: 0 auto; z-index: 100; }
   .nav-item { flex: 1; text-align: center; padding: 14px 0 30px; font-size: 10px; font-weight: 600; color: #333; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; user-select: none; }
   .nav-item.active { color: #fff; }
+  body.admin-mode .nav { display: none; }
+  body.admin-mode .page { padding-bottom: 48px; }
+
+  /* admin */
+  .adm-note { font-size: 11px; line-height: 1.5; color: #3a3a3a; border: 1px solid #161616; border-radius: 12px; padding: 12px 14px; margin-bottom: 24px; }
+  .adm-day { border: 1px solid #151515; border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+  .adm-day-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .adm-sec { border-top: 1px solid #111; margin-top: 14px; padding-top: 12px; }
+  .adm-sec-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .adm-ex { border-bottom: 1px solid #0e0e0e; padding: 10px 0; }
+  .adm-ex:last-child { border-bottom: none; }
+  .adm-ex-top { display: flex; gap: 8px; align-items: center; }
+  .adm-fields { display: flex; gap: 6px; margin-top: 7px; }
+  .adm-field { flex: 1; min-width: 0; }
+  .adm-field label { display: block; font-size: 8px; font-weight: 700; color: #2e2e2e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+  .inp { width: 100%; background: #0c0c0c; border: 1px solid #1a1a1a; border-radius: 8px; color: #d0d0d0; font-family: inherit; font-size: 13px; padding: 8px 9px; }
+  .inp:focus { outline: none; border-color: #333; color: #fff; }
+  .inp.title { font-weight: 600; font-size: 14px; }
+  .inp.small { font-size: 12px; padding: 7px 8px; text-align: center; }
+  .inp.sec { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #777; }
+  .ico { flex-shrink: 0; background: none; border: 1px solid #1a1a1a; border-radius: 8px; color: #444; font-family: inherit; font-size: 13px; line-height: 1; width: 30px; height: 32px; cursor: pointer; }
+  .ico:active { color: #fff; border-color: #333; }
+  .ico.del:active { color: #ff5a5a; border-color: #ff5a5a; }
+  .add { display: block; width: 100%; margin-top: 10px; padding: 9px; background: none; border: 1px dashed #1e1e1e; border-radius: 10px; color: #3a3a3a; font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; }
+  .adm-chk { display: flex; align-items: center; gap: 7px; font-size: 10px; color: #3a3a3a; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; margin-left: 2px; }
+  .adm-chk input { width: 15px; height: 15px; accent-color: #fff; }
+  .adm-actions { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+  .btn-line { display: block; width: 100%; padding: 13px; background: none; border: 1px solid #1a1a1a; border-radius: 12px; color: #777; font-size: 12px; font-family: inherit; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; text-align: center; }
+  .btn-line.danger { color: #3a3a3a; }
+  .saved { position: fixed; left: 0; right: 0; bottom: 24px; margin: 0 auto; width: max-content; background: #fff; color: #000; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 9px 16px; border-radius: 999px; opacity: 0; transform: translateY(6px); transition: all 0.18s; pointer-events: none; z-index: 200; }
+  .saved.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -108,11 +141,7 @@
     <div class="top-count" id="countLabel">0 / 0</div>
   </div>
 
-  <div class="day-tabs">
-    <div class="tab active" onclick="switchDay(0)">День 1</div>
-    <div class="tab" onclick="switchDay(1)">День 2</div>
-    <div class="tab" onclick="switchDay(2)">День 3</div>
-  </div>
+  <div class="day-tabs" id="dayTabs"></div>
 
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
@@ -158,6 +187,7 @@
     <div class="stat">
       <div class="stat-label">Время в зале</div>
       <div class="stat-val" id="totalTime">0<span>ч</span> 0<span>м</span></div>
+      <div class="stat-sub" id="totalWarm"></div>
     </div>
   </div>
 
@@ -167,114 +197,236 @@
   <button class="reset-stats" onclick="resetStats()">сбросить статистику</button>
 </div>
 
-<div class="nav">
-  <div class="nav-item active" id="navWorkout" onclick="showPage('workout')">Тренировка</div>
-  <div class="nav-item" id="navStats" onclick="showPage('stats')">Статистика</div>
+<div class="page" id="pageAdmin">
+  <div class="top">
+    <div class="top-title">Админка</div>
+    <div class="top-count" onclick="exitAdmin()" style="cursor:pointer">выйти →</div>
+  </div>
+
+  <div class="adm-note">
+    Здесь меняется программа: названия, подходы, повторы и вес. Статистика, история и календарь хранятся отдельно и не затираются при любых правках на этой странице.
+  </div>
+
+  <div id="admList"></div>
+
+  <button class="add" onclick="admAddDay()">+ добавить день</button>
+
+  <div class="adm-actions">
+    <button class="btn-line" onclick="exportData()">Скачать резервную копию</button>
+    <button class="btn-line" onclick="document.getElementById('importFile').click()">Загрузить из копии</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(this)">
+    <button class="btn-line danger" onclick="resetPlan()">Вернуть стандартную программу</button>
+    <button class="btn-line danger" onclick="delDemo()">Удалить демо-запись из истории</button>
+  </div>
 </div>
 
+<div class="nav" id="nav">
+  <div class="nav-item active" id="navWorkout" onclick="goPage('workout')">Тренировка</div>
+  <div class="nav-item" id="navStats" onclick="goPage('stats')">Статистика</div>
+</div>
+
+<div class="saved" id="savedToast">Сохранено</div>
+
 <script>
-const DAYS = [
-  {
-    label: "День 1", title: "Грудь + Трицепс",
-    sections: [
-      { name: "Грудь", exercises: [
-        { name: "Жим штанги лёжа", meta: "4×8–10 · 30–40 кг" },
-        { name: "Жим гантелей наклон", meta: "3×10–12 · 8–10 кг", isNew: true },
-        { name: "Грудь в Хаммере", meta: "3×12 · 37.5 кг" },
-        { name: "Бабочка", meta: "3×12–15 · 45 кг" },
-        { name: "Разводка гантелей лёжа", meta: "3×12 · 6–8 кг", isNew: true },
-      ]},
-      { name: "Трицепс", exercises: [
-        { name: "Жим узким хватом", meta: "3×10 · 20–30 кг", isNew: true },
-        { name: "Французский жим лёжа", meta: "3×10 · 7.5 кг" },
-        { name: "Разгибания с косичками", meta: "3×12 · 11 кг" },
-        { name: "Русские отжимания", meta: "3×10–12" },
-      ]}
-    ]
-  },
-  {
-    label: "День 2", title: "Спина + Бицепс",
-    sections: [
-      { name: "Спина", exercises: [
-        { name: "Подтягивания широким хватом", meta: "4×6–8 · с петлёй" },
-        { name: "Тяга верхнего блока", meta: "3×10–12 · 25–30 кг" },
-        { name: "Тяга гантели в наклоне", meta: "3×10–12 · 14–18 кг", isNew: true },
-        { name: "Тяга горизонт. блока", meta: "3×10–12 · 50 кг" },
-        { name: "Гребля", meta: "3×12" },
-      ]},
-      { name: "Бицепс", exercises: [
-        { name: "Подъём штанги стоя", meta: "3×10–12 · 15–20 кг" },
-        { name: "Концентр. сгибания", meta: "3×12 · 8–10 кг", isNew: true },
-        { name: "Молотки с гантелями", meta: "3×10 · 8 кг" },
-        { name: "Бицепс в Хаммере", meta: "3×10 · 25 кг" },
-      ]}
-    ]
-  },
-  {
-    label: "День 3", title: "Ноги + Плечи",
-    sections: [
-      { name: "Ноги", exercises: [
-        { name: "Приседания со штангой", meta: "4×8–10 · 20–40 кг", isNew: true },
-        { name: "Жим ногами в Хаммере", meta: "3×10 · 40–50 кг" },
-        { name: "Разгибания ног в тренажёре", meta: "3×12–15 · 32 кг" },
-        { name: "Румынская тяга с гантелями", meta: "3×12 · 14–18 кг", isNew: true },
-        { name: "Сгибания бицепс бедра", meta: "3×10–12 · 30 кг" },
-      ]},
-      { name: "Плечи", exercises: [
-        { name: "Жим штанги стоя", meta: "3×10 · 20–25 кг" },
-        { name: "Жим в Хаммере сидя", meta: "3×10 · 10 кг" },
-        { name: "Разводка в стороны", meta: "3×15 · 5–6 кг", isNew: true },
-        { name: "Гиря к подбородку", meta: "3×12 · 12–16 кг" },
-      ]}
-    ]
-  }
+/* ---------- стандартная программа ---------- */
+/* [название, подходы, повторы, вес, new?] */
+const RAW_PLAN = [
+  ["День 1", "Грудь + Трицепс", [
+    ["Разминка", true, [
+      ["Бег", "", "10 мин", ""],
+      ["Разминка", "", "5–7 мин", ""],
+    ]],
+    ["Грудь", false, [
+      ["Жим штанги лёжа", "4", "8–10", "30–40 кг"],
+      ["Жим гантелей наклон", "3", "10–12", "8–10 кг", true],
+      ["Грудь в Хаммере", "3", "12", "37.5 кг"],
+      ["Бабочка", "3", "12–15", "45 кг"],
+      ["Разводка гантелей лёжа", "3", "12", "6–8 кг", true],
+    ]],
+    ["Трицепс", false, [
+      ["Жим узким хватом", "3", "10", "20–30 кг", true],
+      ["Французский жим лёжа", "3", "10", "7.5 кг"],
+      ["Разгибания с косичками", "3", "12", "11 кг"],
+      ["Русские отжимания", "3", "10–12", ""],
+    ]],
+  ]],
+  ["День 2", "Спина + Бицепс", [
+    ["Разминка", true, [
+      ["Бег", "", "10 мин", ""],
+      ["Разминка", "", "5–7 мин", ""],
+    ]],
+    ["Спина", false, [
+      ["Подтягивания широким хватом", "4", "6–8", "с петлёй"],
+      ["Тяга верхнего блока", "3", "10–12", "25–30 кг"],
+      ["Тяга гантели в наклоне", "3", "10–12", "14–18 кг", true],
+      ["Тяга горизонт. блока", "3", "10–12", "50 кг"],
+      ["Гребля", "3", "12", ""],
+    ]],
+    ["Бицепс", false, [
+      ["Подъём штанги стоя", "3", "10–12", "15–20 кг"],
+      ["Концентр. сгибания", "3", "12", "8–10 кг", true],
+      ["Молотки с гантелями", "3", "10", "8 кг"],
+      ["Бицепс в Хаммере", "3", "10", "25 кг"],
+    ]],
+  ]],
+  ["День 3", "Ноги + Плечи", [
+    ["Разминка", true, [
+      ["Бег", "", "10 мин", ""],
+      ["Разминка", "", "5–7 мин", ""],
+    ]],
+    ["Ноги", false, [
+      ["Приседания со штангой", "4", "8–10", "20–40 кг", true],
+      ["Жим ногами в Хаммере", "3", "10", "40–50 кг"],
+      ["Разгибания ног в тренажёре", "3", "12–15", "32 кг"],
+      ["Румынская тяга с гантелями", "3", "12", "14–18 кг", true],
+      ["Сгибания бицепс бедра", "3", "10–12", "30 кг"],
+    ]],
+    ["Плечи", false, [
+      ["Жим штанги стоя", "3", "10", "20–25 кг"],
+      ["Жим в Хаммере сидя", "3", "10", "10 кг"],
+      ["Разводка в стороны", "3", "15", "5–6 кг", true],
+      ["Гиря к подбородку", "3", "12", "12–16 кг"],
+    ]],
+  ]],
 ];
 
+function buildDefaultPlan() {
+  return {
+    version: 2,
+    days: RAW_PLAN.map((d, di) => ({
+      id: 'd' + di,
+      label: d[0],
+      title: d[1],
+      sections: d[2].map((s, si) => ({
+        id: `d${di}s${si}`,
+        name: s[0],
+        warmup: !!s[1],
+        exercises: s[2].map((e, ei) => ({
+          id: `d${di}s${si}e${ei}`,
+          name: e[0], sets: e[1], reps: e[2], weight: e[3], isNew: !!e[4]
+        }))
+      }))
+    }))
+  };
+}
+
+/* ---------- хранилище ---------- */
+const K_PLAN = 'workoutPlan';
+const K_STATE = 'exState';
+const K_START = 'workoutStart';
+const K_HIST = 'workoutHistory';
+const K_REC = 'streakRec';
+
+let uidCounter = 0;
+function uid(p) { return p + Date.now().toString(36) + (uidCounter++).toString(36); }
+
+function loadPlan() {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem(K_PLAN) || 'null'); } catch { p = null; }
+  if (!p || !Array.isArray(p.days) || !p.days.length) return buildDefaultPlan();
+  // страховка: у всего должен быть id
+  p.days.forEach(d => {
+    if (!d.id) d.id = uid('d');
+    d.sections = d.sections || [];
+    d.sections.forEach(s => {
+      if (!s.id) s.id = uid('s');
+      s.exercises = s.exercises || [];
+      s.exercises.forEach(e => { if (!e.id) e.id = uid('e'); });
+    });
+  });
+  return p;
+}
+function savePlan() {
+  localStorage.setItem(K_PLAN, JSON.stringify(plan));
+  pruneState();
+}
+function loadState() { try { return JSON.parse(localStorage.getItem(K_STATE) || '{}'); } catch { return {}; } }
+function saveState() { localStorage.setItem(K_STATE, JSON.stringify(exState)); }
+function loadHistory() { try { return JSON.parse(localStorage.getItem(K_HIST) || '[]'); } catch { return []; } }
+function saveHistory(h) { localStorage.setItem(K_HIST, JSON.stringify(h)); }
+
+/* убирает следы удалённых упражнений из текущей сессии (историю не трогает) */
+function pruneState() {
+  const ids = new Set();
+  plan.days.forEach(d => d.sections.forEach(s => s.exercises.forEach(e => ids.add(e.id))));
+  const st = loadState();
+  let changed = false;
+  Object.keys(st).forEach(k => { if (!ids.has(k)) { delete st[k]; changed = true; } });
+  if (changed) localStorage.setItem(K_STATE, JSON.stringify(st));
+  if (activeEx && !ids.has(activeEx)) activeEx = null;
+}
+
+let plan = loadPlan();
 let currentDay = 0;
-let exState = {};
+let exState = loadState();
 let activeEx = null;
 let workoutStartTime = null;
 let tickInterval = null;
 
-function getKey(si, ei) { return `${currentDay}-${si}-${ei}`; }
-function loadState() { try { return JSON.parse(localStorage.getItem('exState')||'{}'); } catch { return {}; } }
-function saveState() { localStorage.setItem('exState', JSON.stringify(exState)); }
-function loadHistory() { try { return JSON.parse(localStorage.getItem('workoutHistory')||'[]'); } catch { return []; } }
-function saveHistory(h) { localStorage.setItem('workoutHistory', JSON.stringify(h)); }
+/* ---------- утилиты ---------- */
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
+function exMeta(ex) {
+  const s = (ex.sets || '').trim(), r = (ex.reps || '').trim(), w = (ex.weight || '').trim();
+  const parts = [];
+  if (s && r) parts.push(`${s}×${r}`);
+  else if (s) parts.push(`${s} подх.`);
+  else if (r) parts.push(r);
+  if (w) parts.push(w);
+  return parts.join(' · ');
+}
 function fmtTimer(ms) {
-  const s = Math.floor(ms/1000), m = Math.floor(s/60);
-  return `${m}:${String(s%60).padStart(2,'0')}`;
+  const s = Math.floor(ms / 1000), m = Math.floor(s / 60);
+  return `${m}:${String(s % 60).padStart(2, '0')}`;
 }
 function fmtBar(ms) {
-  const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60);
-  if (h>0) return `${h}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-  return `${m}:${String(s%60).padStart(2,'0')}`;
+  const s = Math.floor(ms / 1000), m = Math.floor(s / 60), h = Math.floor(m / 60);
+  if (h > 0) return `${h}:${String(m % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  return `${m}:${String(s % 60).padStart(2, '0')}`;
 }
 function fmtDur(ms) {
-  const min = Math.floor(ms/60000), h = Math.floor(min/60);
-  if (h>0) return `${h}ч ${min%60}м`;
+  const min = Math.floor(ms / 60000), h = Math.floor(min / 60);
+  if (h > 0) return `${h}ч ${min % 60}м`;
   return `${min}м`;
+}
+function elapsedOf(id, now) {
+  const st = exState[id] || {};
+  let ms = st.elapsed || 0;
+  if (id === activeEx && st.startTime) ms += (now || Date.now()) - st.startTime;
+  return ms;
+}
+
+/* ---------- страница тренировки ---------- */
+function renderTabs() {
+  document.getElementById('dayTabs').innerHTML = plan.days.map((d, i) =>
+    `<div class="tab${i === currentDay ? ' active' : ''}" onclick="switchDay(${i})">${esc(d.label)}</div>`
+  ).join('');
 }
 
 function renderExercises() {
   exState = loadState();
-  const day = DAYS[currentDay];
+  if (currentDay >= plan.days.length) currentDay = 0;
+  renderTabs();
+  const day = plan.days[currentDay];
+  const now = Date.now();
   let html = '';
-  day.sections.forEach((sec, si) => {
-    html += `<div class="section">${sec.name}</div>`;
-    sec.exercises.forEach((ex, ei) => {
-      const key = getKey(si, ei);
-      const st = exState[key] || {};
-      const isActive = activeEx === key;
+  day.sections.forEach(sec => {
+    const total = sec.warmup ? sec.exercises.reduce((a, e) => a + elapsedOf(e.id, now), 0) : 0;
+    html += `<div class="section"><span>${esc(sec.name)}</span>` +
+      (sec.warmup ? `<span class="section-total" id="sec-${sec.id}">${total > 0 ? fmtTimer(total) : ''}</span>` : '') +
+      `</div>`;
+    sec.exercises.forEach(ex => {
+      const st = exState[ex.id] || {};
+      const isActive = activeEx === ex.id;
       const elapsed = st.elapsed || 0;
-      html += `<div class="ex${st.done?' done':''}${isActive?' active-ex':''}" onclick="tapEx('${key}')">
+      const meta = exMeta(ex);
+      html += `<div class="ex${st.done ? ' done' : ''}${isActive ? ' active-ex' : ''}" onclick="tapEx('${ex.id}')">
         <div class="cb"><svg viewBox="0 0 12 9" fill="none"><polyline points="1,4.5 4.5,8 11,1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="ex-body">
-          <div class="ex-name">${ex.name}${ex.isNew?'<span class="new">new</span>':''}</div>
-          <div class="ex-meta">${ex.meta}</div>
+          <div class="ex-name">${esc(ex.name)}${ex.isNew ? '<span class="new">new</span>' : ''}</div>
+          ${meta ? `<div class="ex-meta">${esc(meta)}</div>` : ''}
         </div>
-        <div class="ex-timer" id="t-${key}">${elapsed>0?fmtTimer(elapsed):''}</div>
+        <div class="ex-timer" id="t-${ex.id}">${elapsed > 0 ? fmtTimer(elapsed) : ''}</div>
       </div>`;
     });
   });
@@ -282,13 +434,33 @@ function renderExercises() {
   updateProgress();
 }
 
-function tapEx(key) {
+function tick() {
+  const now = Date.now();
+  if (activeEx) {
+    const st = exState[activeEx] || {};
+    const el = document.getElementById('t-' + activeEx);
+    if (el) el.textContent = fmtTimer((st.elapsed || 0) + (now - (st.startTime || now)));
+  }
+  if (workoutStartTime) document.getElementById('wbarTime').textContent = fmtBar(now - workoutStartTime);
+  const curDay = plan.days[currentDay];
+  if (!curDay) return;
+  curDay.sections.forEach(sec => {
+    if (!sec.warmup) return;
+    const el = document.getElementById('sec-' + sec.id);
+    if (!el) return;
+    const total = sec.exercises.reduce((a, e) => a + elapsedOf(e.id, now), 0);
+    el.textContent = total > 0 ? fmtTimer(total) : '';
+  });
+}
+function startTicking() { clearInterval(tickInterval); tickInterval = setInterval(tick, 1000); tick(); }
+
+function tapEx(id) {
   exState = loadState();
   const now = Date.now();
 
-  if (activeEx === key) {
-    const st = exState[key] || {};
-    exState[key] = { done: true, elapsed: (st.elapsed||0) + (now - (st.startTime||now)) };
+  if (activeEx === id) {
+    const st = exState[id] || {};
+    exState[id] = { done: true, elapsed: (st.elapsed || 0) + (now - (st.startTime || now)) };
     activeEx = null;
     clearInterval(tickInterval);
     saveState(); renderExercises(); return;
@@ -296,36 +468,30 @@ function tapEx(key) {
 
   if (activeEx) {
     const prev = exState[activeEx] || {};
-    exState[activeEx] = { done: true, elapsed: (prev.elapsed||0) + (now - (prev.startTime||now)) };
+    exState[activeEx] = { done: true, elapsed: (prev.elapsed || 0) + (now - (prev.startTime || now)) };
   }
 
   if (!workoutStartTime) {
     workoutStartTime = now;
+    localStorage.setItem(K_START, String(now));
     document.getElementById('wbar').classList.add('show');
     document.body.classList.add('workout-active');
   }
 
-  exState[key] = { done: false, startTime: now, elapsed: exState[key]?.elapsed || 0 };
-  activeEx = key;
+  exState[id] = { done: false, startTime: now, elapsed: (exState[id] || {}).elapsed || 0 };
+  activeEx = id;
   saveState(); renderExercises();
-
-  clearInterval(tickInterval);
-  tickInterval = setInterval(() => {
-    const st = exState[key] || {};
-    const el = document.getElementById(`t-${key}`);
-    if (el) el.textContent = fmtTimer((st.elapsed||0) + (Date.now() - (st.startTime||Date.now())));
-    if (workoutStartTime) document.getElementById('wbarTime').textContent = fmtBar(Date.now() - workoutStartTime);
-  }, 1000);
+  startTicking();
 }
 
 function updateProgress() {
-  const day = DAYS[currentDay];
+  const day = plan.days[currentDay];
   let total = 0, done = 0;
-  day.sections.forEach((sec, si) => sec.exercises.forEach((_, ei) => {
+  day.sections.forEach(sec => sec.exercises.forEach(ex => {
     total++;
-    if ((exState[getKey(si,ei)]||{}).done) done++;
+    if ((exState[ex.id] || {}).done) done++;
   }));
-  document.getElementById('progressFill').style.width = total ? (done/total*100)+'%' : '0%';
+  document.getElementById('progressFill').style.width = total ? (done / total * 100) + '%' : '0%';
   document.getElementById('countLabel').textContent = `${done} / ${total}`;
   document.getElementById('finishBtn').disabled = done === 0;
 }
@@ -335,16 +501,18 @@ function finishWorkout() {
   const now = Date.now();
   if (activeEx) {
     const st = exState[activeEx] || {};
-    exState[activeEx] = { done: true, elapsed: (st.elapsed||0) + (now - (st.startTime||now)) };
+    exState[activeEx] = { done: true, elapsed: (st.elapsed || 0) + (now - (st.startTime || now)) };
     activeEx = null;
     clearInterval(tickInterval);
   }
 
-  const day = DAYS[currentDay];
-  let doneCount = 0, total = 0;
-  day.sections.forEach((sec, si) => sec.exercises.forEach((_, ei) => {
+  const day = plan.days[currentDay];
+  let doneCount = 0, total = 0, warmupMs = 0;
+  day.sections.forEach(sec => sec.exercises.forEach(ex => {
     total++;
-    if ((exState[getKey(si,ei)]||{}).done) doneCount++;
+    const st = exState[ex.id] || {};
+    if (st.done) doneCount++;
+    if (sec.warmup) warmupMs += st.elapsed || 0;
   }));
 
   const history = loadHistory();
@@ -353,28 +521,31 @@ function finishWorkout() {
     dayLabel: day.label,
     dayTitle: day.title,
     totalMs: workoutStartTime ? now - workoutStartTime : 0,
+    warmupMs,
     doneCount, total
   });
   saveHistory(history);
 
+  const dayIds = new Set();
+  day.sections.forEach(sec => sec.exercises.forEach(ex => dayIds.add(ex.id)));
   const newState = {};
-  Object.keys(exState).forEach(k => { if (!k.startsWith(currentDay+'-')) newState[k] = exState[k]; });
-  localStorage.setItem('exState', JSON.stringify(newState));
+  Object.keys(exState).forEach(k => { if (!dayIds.has(k)) newState[k] = exState[k]; });
+  localStorage.setItem(K_STATE, JSON.stringify(newState));
+  localStorage.removeItem(K_START);
   workoutStartTime = null;
   document.getElementById('wbar').classList.remove('show');
   document.body.classList.remove('workout-active');
   renderExercises();
-  showPage('stats');
+  goPage('stats');
 }
 
 function switchDay(i) {
   currentDay = i;
-  document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
-  activeEx = null;
-  clearInterval(tickInterval);
   renderExercises();
+  if (activeEx || workoutStartTime) startTicking();
 }
 
+/* ---------- статистика ---------- */
 let calYear, calMonth;
 
 function showStats() {
@@ -382,19 +553,21 @@ function showStats() {
   renderStreak(history);
   renderCalendar(history);
   document.getElementById('totalVisits').textContent = history.length;
-  const totalMs = history.reduce((a,h) => a+(h.totalMs||0), 0);
-  const min = Math.floor(totalMs/60000), h = Math.floor(min/60);
-  document.getElementById('totalTime').innerHTML = `${h}<span>ч</span> ${min%60}<span>м</span>`;
+  const totalMs = history.reduce((a, h) => a + (h.totalMs || 0), 0);
+  const min = Math.floor(totalMs / 60000), h = Math.floor(min / 60);
+  document.getElementById('totalTime').innerHTML = `${h}<span>ч</span> ${min % 60}<span>м</span>`;
+  const warmMs = history.reduce((a, x) => a + (x.warmupMs || 0), 0);
+  document.getElementById('totalWarm').textContent = warmMs > 0 ? `из них разминка — ${fmtDur(warmMs)}` : '';
   renderHist(history);
 }
 
 function getWeekKey(d) {
-  const t = new Date(d); t.setHours(0,0,0,0);
-  const dow = t.getDay() === 0 ? 6 : t.getDay()-1;
+  const t = new Date(d); t.setHours(0, 0, 0, 0);
+  const dow = t.getDay() === 0 ? 6 : t.getDay() - 1;
   t.setDate(t.getDate() - dow);
-  return t.toISOString().slice(0,10);
+  return t.toISOString().slice(0, 10);
 }
-function prevWeek(wk) { const d = new Date(wk); d.setDate(d.getDate()-7); return d.toISOString().slice(0,10); }
+function prevWeek(wk) { const d = new Date(wk); d.setDate(d.getDate() - 7); return d.toISOString().slice(0, 10); }
 
 function renderStreak(history) {
   const weeks = new Set(history.map(h => getWeekKey(new Date(h.date))));
@@ -404,41 +577,41 @@ function renderStreak(history) {
     const cur = getWeekKey(new Date());
     if (sorted[0] === cur || sorted[0] === prevWeek(cur)) {
       streak = 1;
-      for (let i=1; i<sorted.length; i++) {
-        if (sorted[i] === prevWeek(sorted[i-1])) streak++;
+      for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i] === prevWeek(sorted[i - 1])) streak++;
         else break;
       }
     }
   }
-  const rec = Math.max(parseInt(localStorage.getItem('streakRec')||'0'), streak);
-  localStorage.setItem('streakRec', rec);
+  const rec = Math.max(parseInt(localStorage.getItem(K_REC) || '0'), streak);
+  localStorage.setItem(K_REC, rec);
   document.getElementById('sCur').textContent = streak;
-  document.getElementById('sM1').textContent = streak > 0 ? streak-1 : '—';
-  document.getElementById('sP1').textContent = streak+1;
+  document.getElementById('sM1').textContent = streak > 0 ? streak - 1 : '—';
+  document.getElementById('sP1').textContent = streak + 1;
   document.getElementById('sRec').textContent = rec;
 }
 
 function renderCalendar(history) {
   const now = new Date();
   if (calYear === undefined) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
-  const wd = new Set(history.map(h => h.date.slice(0,10)));
+  const wd = new Set(history.map(h => h.date.slice(0, 10)));
   const months = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
-  document.getElementById('calMonth').textContent = months[calMonth]+' '+calYear;
+  document.getElementById('calMonth').textContent = months[calMonth] + ' ' + calYear;
   let html = ['пн','вт','ср','чт','пт','сб','вс'].map(d => `<div class="cal-dow">${d}</div>`).join('');
   let start = new Date(calYear, calMonth, 1).getDay();
-  start = start === 0 ? 6 : start-1;
-  for (let i=0;i<start;i++) html += `<div class="cal-day"></div>`;
-  const dim = new Date(calYear, calMonth+1, 0).getDate();
-  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-  for (let d=1; d<=dim; d++) {
-    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    html += `<div class="cal-day${wd.has(ds)?' has':''}${ds===today?' today':''}">${d}</div>`;
+  start = start === 0 ? 6 : start - 1;
+  for (let i = 0; i < start; i++) html += `<div class="cal-day"></div>`;
+  const dim = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  for (let d = 1; d <= dim; d++) {
+    const ds = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    html += `<div class="cal-day${wd.has(ds) ? ' has' : ''}${ds === today ? ' today' : ''}">${d}</div>`;
   }
   document.getElementById('calGrid').innerHTML = html;
 }
 
-function calPrev() { calMonth--; if (calMonth<0){calMonth=11;calYear--;} renderCalendar(loadHistory()); }
-function calNext() { calMonth++; if (calMonth>11){calMonth=0;calYear++;} renderCalendar(loadHistory()); }
+function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(loadHistory()); }
+function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(loadHistory()); }
 
 function renderHist(history) {
   if (!history.length) {
@@ -446,12 +619,13 @@ function renderHist(history) {
     return;
   }
   const m = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  document.getElementById('histList').innerHTML = history.slice(0,15).map(h => {
+  document.getElementById('histList').innerHTML = history.slice(0, 15).map(h => {
     const d = new Date(h.date);
+    const warm = h.warmupMs ? ` · разминка ${fmtTimer(h.warmupMs)}` : '';
     return `<div class="hist-item">
       <div>
-        <div class="hist-name">${h.dayTitle}</div>
-        <div class="hist-sub">${d.getDate()} ${m[d.getMonth()]} · ${h.doneCount}/${h.total} упр.</div>
+        <div class="hist-name">${esc(h.dayTitle)}</div>
+        <div class="hist-sub">${d.getDate()} ${m[d.getMonth()]} · ${h.doneCount}/${h.total} упр.${warm}</div>
       </div>
       <div class="hist-time">${h.totalMs ? fmtDur(h.totalMs) : '—'}</div>
     </div>`;
@@ -459,10 +633,11 @@ function renderHist(history) {
 }
 
 function resetStats() {
-  if (!confirm('Точно сбросить всю статистику? История, стрик и календарь будут удалены.')) return;
-  localStorage.removeItem('workoutHistory');
-  localStorage.removeItem('streakRec');
-  localStorage.removeItem('exState');
+  if (!confirm('Точно сбросить всю статистику? История, стрик и календарь будут удалены. Программа тренировок останется.')) return;
+  localStorage.removeItem(K_HIST);
+  localStorage.removeItem(K_REC);
+  localStorage.removeItem(K_STATE);
+  localStorage.removeItem(K_START);
   activeEx = null;
   workoutStartTime = null;
   clearInterval(tickInterval);
@@ -472,34 +647,266 @@ function resetStats() {
   renderExercises();
 }
 
+/* ---------- админка ---------- */
+function findEx(id) {
+  for (const d of plan.days) for (const s of d.sections) {
+    const i = s.exercises.findIndex(e => e.id === id);
+    if (i >= 0) return { sec: s, i, ex: s.exercises[i] };
+  }
+  return null;
+}
+function findSec(id) {
+  for (const d of plan.days) {
+    const i = d.sections.findIndex(s => s.id === id);
+    if (i >= 0) return { day: d, i, sec: d.sections[i] };
+  }
+  return null;
+}
+function findDay(id) {
+  const i = plan.days.findIndex(d => d.id === id);
+  return i >= 0 ? { i, day: plan.days[i] } : null;
+}
+
+let toastTimer = null;
+function flashSaved(text) {
+  const t = document.getElementById('savedToast');
+  t.textContent = text || 'Сохранено';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1100);
+}
+
+function renderAdmin() {
+  document.getElementById('admList').innerHTML = plan.days.map(day => `
+    <div class="adm-day">
+      <div class="adm-day-head">
+        <input class="inp small" style="max-width:78px" value="${esc(day.label)}" oninput="admUpdDay('${day.id}','label',this.value)">
+        <input class="inp title" value="${esc(day.title)}" oninput="admUpdDay('${day.id}','title',this.value)">
+        <button class="ico del" onclick="admDelDay('${day.id}')">✕</button>
+      </div>
+      ${day.sections.map(sec => `
+        <div class="adm-sec">
+          <div class="adm-sec-head">
+            <input class="inp sec" value="${esc(sec.name)}" oninput="admUpdSec('${sec.id}','name',this.value)">
+            <button class="ico" onclick="admMoveSec('${sec.id}',-1)">↑</button>
+            <button class="ico" onclick="admMoveSec('${sec.id}',1)">↓</button>
+            <button class="ico del" onclick="admDelSec('${sec.id}')">✕</button>
+          </div>
+          <label class="adm-chk"><input type="checkbox" ${sec.warmup ? 'checked' : ''} onchange="admUpdSec('${sec.id}','warmup',this.checked)"> разминка — время суммируется</label>
+          ${sec.exercises.map(ex => `
+            <div class="adm-ex">
+              <div class="adm-ex-top">
+                <input class="inp" value="${esc(ex.name)}" oninput="admUpdEx('${ex.id}','name',this.value)">
+                <button class="ico" onclick="admMoveEx('${ex.id}',-1)">↑</button>
+                <button class="ico" onclick="admMoveEx('${ex.id}',1)">↓</button>
+                <button class="ico del" onclick="admDelEx('${ex.id}')">✕</button>
+              </div>
+              <div class="adm-fields">
+                <div class="adm-field"><label>подходы</label><input class="inp small" value="${esc(ex.sets)}" oninput="admUpdEx('${ex.id}','sets',this.value)"></div>
+                <div class="adm-field"><label>повторы</label><input class="inp small" value="${esc(ex.reps)}" oninput="admUpdEx('${ex.id}','reps',this.value)"></div>
+                <div class="adm-field" style="flex:1.4"><label>вес</label><input class="inp small" value="${esc(ex.weight)}" oninput="admUpdEx('${ex.id}','weight',this.value)"></div>
+                <div class="adm-field" style="flex:0 0 44px"><label>new</label><input type="checkbox" ${ex.isNew ? 'checked' : ''} style="width:16px;height:16px;accent-color:#fff;margin-top:6px" onchange="admUpdEx('${ex.id}','isNew',this.checked)"></div>
+              </div>
+            </div>
+          `).join('')}
+          <button class="add" onclick="admAddEx('${sec.id}')">+ упражнение</button>
+        </div>
+      `).join('')}
+      <button class="add" onclick="admAddSec('${day.id}')">+ категория</button>
+    </div>
+  `).join('');
+}
+
+function admUpdEx(id, field, val) {
+  const f = findEx(id); if (!f) return;
+  f.ex[field] = val;
+  savePlan(); flashSaved();
+}
+function admUpdSec(id, field, val) {
+  const f = findSec(id); if (!f) return;
+  f.sec[field] = val;
+  savePlan(); flashSaved();
+}
+function admUpdDay(id, field, val) {
+  const f = findDay(id); if (!f) return;
+  f.day[field] = val;
+  savePlan(); flashSaved();
+}
+function admAddEx(secId) {
+  const f = findSec(secId); if (!f) return;
+  f.sec.exercises.push({ id: uid('e'), name: 'Новое упражнение', sets: '3', reps: '10', weight: '', isNew: false });
+  savePlan(); renderAdmin(); flashSaved('Добавлено');
+}
+function admDelEx(id) {
+  const f = findEx(id); if (!f) return;
+  if (!confirm(`Удалить «${f.ex.name}»? История тренировок не изменится.`)) return;
+  f.sec.exercises.splice(f.i, 1);
+  savePlan(); renderAdmin(); flashSaved('Удалено');
+}
+function admMoveEx(id, dir) {
+  const f = findEx(id); if (!f) return;
+  const j = f.i + dir;
+  if (j < 0 || j >= f.sec.exercises.length) return;
+  const arr = f.sec.exercises;
+  [arr[f.i], arr[j]] = [arr[j], arr[f.i]];
+  savePlan(); renderAdmin();
+}
+function admAddSec(dayId) {
+  const f = findDay(dayId); if (!f) return;
+  f.day.sections.push({ id: uid('s'), name: 'Новая категория', warmup: false, exercises: [] });
+  savePlan(); renderAdmin(); flashSaved('Добавлено');
+}
+function admDelSec(id) {
+  const f = findSec(id); if (!f) return;
+  if (!confirm(`Удалить категорию «${f.sec.name}» со всеми упражнениями? История тренировок не изменится.`)) return;
+  f.day.sections.splice(f.i, 1);
+  savePlan(); renderAdmin(); flashSaved('Удалено');
+}
+function admMoveSec(id, dir) {
+  const f = findSec(id); if (!f) return;
+  const j = f.i + dir;
+  if (j < 0 || j >= f.day.sections.length) return;
+  const arr = f.day.sections;
+  [arr[f.i], arr[j]] = [arr[j], arr[f.i]];
+  savePlan(); renderAdmin();
+}
+function admAddDay() {
+  const id = uid('d');
+  plan.days.push({
+    id, label: 'День ' + (plan.days.length + 1), title: 'Новый день',
+    sections: [{ id: uid('s'), name: 'Разминка', warmup: true, exercises: [
+      { id: uid('e'), name: 'Бег', sets: '', reps: '10 мин', weight: '', isNew: false },
+      { id: uid('e'), name: 'Разминка', sets: '', reps: '5–7 мин', weight: '', isNew: false }
+    ]}]
+  });
+  savePlan(); renderAdmin(); flashSaved('Добавлено');
+}
+function admDelDay(id) {
+  if (plan.days.length <= 1) { alert('Должен остаться хотя бы один день.'); return; }
+  const f = findDay(id); if (!f) return;
+  if (!confirm(`Удалить «${f.day.label} — ${f.day.title}»? История тренировок не изменится.`)) return;
+  plan.days.splice(f.i, 1);
+  if (currentDay >= plan.days.length) currentDay = 0;
+  savePlan(); renderAdmin(); flashSaved('Удалено');
+}
+
+function resetPlan() {
+  if (!confirm('Вернуть стандартную программу? Все правки упражнений пропадут. Статистика и история сохранятся.')) return;
+  plan = buildDefaultPlan();
+  currentDay = 0;
+  savePlan(); renderAdmin(); renderExercises(); flashSaved('Программа сброшена');
+}
+
+function delDemo() {
+  const h = loadHistory();
+  const filtered = h.filter(x => !x.demo);
+  if (filtered.length === h.length) { alert('Демо-записей нет.'); return; }
+  saveHistory(filtered);
+  flashSaved('Демо удалено');
+}
+
+function exportData() {
+  const data = {
+    app: 'workout-tracker', exportedAt: new Date().toISOString(),
+    plan, history: loadHistory(), streakRec: localStorage.getItem(K_REC) || '0'
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'workout-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function importData(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try { data = JSON.parse(reader.result); } catch { alert('Файл не читается: это не резервная копия.'); input.value = ''; return; }
+    if (!data || !data.plan) { alert('В файле нет программы тренировок.'); input.value = ''; return; }
+    const withHist = Array.isArray(data.history) && data.history.length;
+    const msg = withHist
+      ? `Загрузить программу и историю (${data.history.length} записей)? Текущие данные будут заменены.`
+      : 'Загрузить программу из файла? Статистика останется как есть.';
+    if (!confirm(msg)) { input.value = ''; return; }
+    localStorage.setItem(K_PLAN, JSON.stringify(data.plan));
+    if (withHist) {
+      saveHistory(data.history);
+      if (data.streakRec) localStorage.setItem(K_REC, data.streakRec);
+    }
+    plan = loadPlan();
+    currentDay = 0;
+    renderAdmin(); renderExercises();
+    flashSaved('Загружено');
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+/* ---------- навигация ---------- */
+function isAdminRoute() {
+  const h = location.hash.replace(/^#\/?/, '').toLowerCase();
+  if (h === 'admin') return true;
+  if (/(^|[?&])admin($|[=&])/i.test(location.search)) return true;
+  return /\/admin\/?$/i.test(location.pathname);
+}
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
-  document.getElementById('nav'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
+  const id = 'page' + name[0].toUpperCase() + name.slice(1);
+  document.getElementById(id).classList.add('active');
+  const nav = document.getElementById('nav' + name[0].toUpperCase() + name.slice(1));
+  if (nav) nav.classList.add('active');
+  document.body.classList.toggle('admin-mode', name === 'admin');
   if (name === 'stats') showStats();
+  if (name === 'admin') renderAdmin();
+  if (name === 'workout') renderExercises();
+  window.scrollTo(0, 0);
 }
 
-// DEMO: запись на 23 число для превью (удалится через "сбросить статистику")
-(function seedDemo() {
-  const h = loadHistory();
-  if (!h.some(x => x.demo)) {
-    const now = new Date();
-    const d = new Date(now.getFullYear(), now.getMonth(), 23, 18, 30);
-    h.push({
-      date: d.toISOString(),
-      dayLabel: "День 1",
-      dayTitle: "Грудь + Трицепс",
-      totalMs: 62 * 60000,
-      doneCount: 9, total: 9,
-      demo: true
-    });
-    h.sort((a,b) => new Date(b.date) - new Date(a.date));
-    saveHistory(h);
+function goPage(name) {
+  if (isAdminRoute() && name !== 'admin') {
+    history.replaceState(null, '', location.pathname.replace(/\/admin\/?$/i, '/') + location.search.replace(/(^\?|&)admin(=[^&]*)?/i, '') );
+  }
+  showPage(name);
+}
+
+function exitAdmin() {
+  if (location.hash) location.hash = '';
+  history.replaceState(null, '', location.pathname.replace(/\/admin\/?$/i, '/'));
+  showPage('workout');
+}
+
+function route() {
+  if (isAdminRoute()) showPage('admin');
+  else showPage('workout');
+}
+window.addEventListener('hashchange', route);
+
+/* ---------- восстановление незакрытой тренировки ---------- */
+(function restoreSession() {
+  exState = loadState();
+  const ws = parseInt(localStorage.getItem(K_START) || '0', 10);
+  Object.keys(exState).forEach(k => {
+    if (exState[k] && exState[k].startTime && !exState[k].done) activeEx = k;
+  });
+  if (activeEx) {
+    const di = plan.days.findIndex(d => d.sections.some(s => s.exercises.some(e => e.id === activeEx)));
+    if (di >= 0) currentDay = di;
+  }
+  if (ws) {
+    workoutStartTime = ws;
+    document.getElementById('wbar').classList.add('show');
+    document.body.classList.add('workout-active');
   }
 })();
 
-renderExercises();
+pruneState();
+route();
+if (activeEx || workoutStartTime) startTicking();
 </script>
 </body>
 </html>
